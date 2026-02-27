@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إلى ملوكتي ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-red: #ff0000; --gold: #ffd700; --dark-bg: #1a0000; }
+        body { background: radial-gradient(circle, #400000, var(--dark-bg)); color: white; font-family: 'Cairo', sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow-x: hidden; touch-action: manipulation; }
+        .container { z-index: 10; width: 95%; max-width: 450px; text-align: center; padding: 20px 0; }
+
+        #lock-screen { background: black; position: fixed; inset: 0; z-index: 2000; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px; }
+        .lock-timer { font-size: 1.5rem; color: var(--primary-red); text-shadow: 0 0 10px var(--primary-red); font-weight: bold; margin-top: 20px; }
+
+        #envelope-wrapper { cursor: pointer; animation: glowPulse 2s infinite; margin-bottom: 20px; }
+        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 5px #ff0000); } 50% { filter: drop-shadow(0 0 20px #ff4d4d); } }
+        .envelope { position: relative; width: 200px; height: 130px; background: #900; margin: auto; border-radius: 0 0 10px 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .envelope::before { content: ""; position: absolute; top: 0; left: 0; border-left: 100px solid transparent; border-right: 100px solid transparent; border-top: 75px solid #d40000; transition: 0.8s; z-index: 5; transform-origin: top; }
+        .envelope.open::before { transform: rotateX(180deg); }
+        .heart-seal { position: absolute; top: 40px; left: 50%; transform: translateX(-50%); font-size: 30px; z-index: 6; }
+
+        .card, #login-screen, #cake-screen, #quiz-screen { background: rgba(0, 0, 0, 0.85); padding: 30px; border-radius: 35px; backdrop-filter: blur(20px); border: 1px solid rgba(255, 0, 0, 0.3); margin-bottom: 20px; }
+        
+        .romantic-text { line-height: 1.8; font-size: 1.1rem; color: #ffe6e6; text-align: center; margin-bottom: 25px; }
+        .highlight { color: var(--gold); font-weight: bold; }
+
+        .wishes-list { background: rgba(255, 215, 0, 0.1); border: 1px dashed var(--gold); border-radius: 20px; padding: 15px; margin: 15px 0; text-align: right; }
+        .wish-item { margin: 8px 0; font-size: 0.95rem; color: #fff; display: flex; align-items: center; }
+        .wish-item::before { content: "⭐"; margin-left: 10px; font-size: 0.8rem; color: var(--gold); }
+
+        .wish-box { background: rgba(255, 0, 0, 0.05); border: 2px dashed var(--primary-red); padding: 20px; border-radius: 20px; margin: 20px 0; }
+        .wish-box textarea { width: 90%; background: rgba(0,0,0,0.5); border: 1px solid var(--primary-red); border-radius: 10px; color: white; padding: 10px; font-family: 'Cairo'; resize: none; margin-top: 10px; outline: none; }
+
+        .counter-box { background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; margin: 15px 0; border: 1px solid var(--primary-red); }
+        .video-container { position: relative; border-radius: 20px; overflow: hidden; border: 2px solid var(--primary-red); padding-bottom: 56.25%; height: 0; margin: 20px 0; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .scratch-box { position: relative; width: 100%; max-width: 300px; height: 100px; margin: 20px auto; background: #fff; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; font-weight: bold; border: 4px solid var(--primary-red); box-shadow: 0 0 20px var(--primary-red); overflow: hidden; }
+        .scratch-box canvas { position: absolute; top: 0; left: 0; cursor: crosshair; touch-action: none; }
+
+        .quiz-btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border-radius: 15px; border: 1px solid var(--primary-red); background: rgba(255,0,0,0.1); color: white; cursor: pointer; font-family: 'Cairo'; font-weight: bold; transition: 0.3s; }
+        .quiz-btn:hover { background: var(--primary-red); }
+
+        input { width: 85%; padding: 15px; border-radius: 15px; border: none; margin-bottom: 15px; text-align: center; background: #222; color: white; }
+        button { background: linear-gradient(to right, #ff0000, #800000); color: white; border: none; padding: 12px 30px; border-radius: 30px; cursor: pointer; font-weight: bold; margin: 5px; }
+        .hidden { display: none !important; }
+        img { width: 100%; border-radius: 20px; border: 2px solid var(--primary-red); margin: 20px 0; }
+        
+        .emergency-msg { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; background: white; color: #b30000; padding: 30px; border-radius: 25px; z-index: 3000; border: 5px solid var(--primary-red); font-weight: bold; box-shadow: 0 0 50px black; }
+        .close-hint { display: block; margin-top: 15px; font-size: 0.8rem; color: #888; font-weight: normal; }
+        .final-wish { margin: 30px 0; font-size: 1.4rem; color: var(--gold); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); font-weight: bold; }
+
+        /* ستايل القلب المتطاير */
+        .touch-heart { position: fixed; pointer-events: none; font-size: 24px; animation: heartFloat 1s ease-out forwards; z-index: 9999; }
+        @keyframes heartFloat {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+        }
+    </style>
+</head>
+<body onmousedown="spawnHeart(event)" ontouchstart="spawnHeart(event)">
+
+    <div id="lock-screen">
+        <h2 style="color: white;">ممنوع الدخول يا ملوكتيي 🤫</h2>
+        <p style="color: #aaa;">فاضل شوية وقت على المفاجأة..</p>
+        <div id="countdown-timer" class="lock-timer"></div>
+    </div>
+
+    <div class="container">
+        <div id="envelope-wrapper" class="hidden" onclick="openEnvelope()">
+            <div class="envelope" id="env"><div class="heart-seal">❤️</div></div>
+            <h3 style="margin-top:25px; font-size: 1.1rem;">ملوكتيي.. افتحي الجواب السري 💌</h3>
+        </div>
+
+        <div id="login-screen" class="hidden">
+            <h2 style="color: var(--primary-red);">لـ خدخدديييييي 😍</h2>
+            <input type="password" id="password" placeholder="كلمة السر">
+            <br><button onclick="checkPass()">دوسي هنا 😎</button>
+        </div>
+
+        <div id="quiz-screen" class="hidden">
+            <h2 id="quiz-question" style="color: var(--gold);">جاوبي صح عشان تدخلي 😉</h2>
+            <div id="quiz-options"></div>
+        </div>
+
+        <div id="cake-screen" class="hidden">
+            <h3 style="color: var(--gold); margin-bottom: 20px;">! اطفي الشمعة 🎂</h3>
+            <div style="font-size: 100px; cursor: pointer;" onclick="blowCandle()">🎂</div>
+        </div>
+
+        <div id="main-content" class="hidden">
+            <div class="card">
+                <h2 style="color: var(--primary-red);">كل سنة وانتي طيبة يا ملوكتيي ❤️</h2>
+                <div class="romantic-text">
+                    بين جميع أيام السنة يوجد يوم مميز.. يوم ولدت فيه <span class="highlight">صديقة عظيمة</span>، صديقة لا يمكن للحياة أن تمنحها لي مرتين. 
+                    <br><br>
+                    كل عام وأنتِ بخير وسعادة يا <span class="highlight">يخدخودي</span>. 
+
+                    <div class="wishes-list">
+                        <h4 style="color: var(--gold); margin-top: 0; text-align: center;">أمنياتي ليكي في سنتك الجديدة ✨</h4>
+                        <div class="wish-item">تفضلي دايماً مبسوطة وضحكتك ماليها الوش.</div>
+                        <div class="wish-item">تحققي كل أحلامك وتوصلي للي بتتمنيه.</div>
+                        <div class="wish-item">ربنا يريح قلبك ويبعد عنك أي زعل.</div>
+                        <div class="wish-item">نفضل مع بعض دايماً وسند لبعض.</div>
+                    </div>
+
+                    <br>
+                    بعيداً عن كل الكلام ده، عايز أقولك إنك أغلى وأحلى وأحسن واحدة أنا عرفتها، وبجد غلاوتك عندي متتقدرش بأي حاجة. 
+                    ربنا يديمك ليا ومفيش حاجة تفرقنا، ونفضل سند لبعض كدا دايماً... دي أول سنة أكون معاكي ومش آخر سنة إن شاء الله، ونفضل مع بعض قارفين بعض ومصدعين بعض بس على قلبنا زي العسل ومش بنهون ع بعض ف الاخر و احب اقولك ربنا يديمك ليا وكل سنه وانتي طيبههه يعمرييي ♡
+                </div>
+
+                <div style="background:rgba(255,255,255,0.05); padding:10px; border-radius:20px; border:1px solid var(--primary-red); margin:15px 0;">
+                    <p style="font-size: 0.8rem; margin-bottom: 5px;">اسمع للاخر يبستوتي 🤗🤎</p>
+                    <iframe src="https://drive.google.com/file/d/1yhoec0cn4aNeKGoSALScxFx-kcg5IuDh/preview" style="width:100%; height:60px; border:none; border-radius: 10px;"></iframe>
+                </div>
+
+                <div class="counter-box">
+                    <p style="margin: 0 0 10px 0; font-weight: bold; color: var(--gold);">أحلى أيام مع أحلى بستوت 😍☝️</p>
+                    <div id="live-counter"></div>
+                </div>
+
+                <img src="https://image2url.com/r2/default/images/1771727735310-33882177-5dfb-48c5-97de-bca6e1f8effa.jpeg">
+
+                <div class="video-container">
+                    <iframe src="https://drive.google.com/file/d/1gxdMXfX4i1Jy1XHPlMDo76t0-PAJknuY/preview"></iframe>
+                </div>
+
+                <div class="wish-box">
+                    <span style="color: var(--primary-red); font-weight: bold;">✨ صندوق أمنيات بستوتييي ✨</span>
+                    <textarea id="wishInput" rows="2" placeholder="أتمنى..."></textarea>
+                    <br><button onclick="saveWish()" style="padding: 5px 15px; font-size: 0.8rem; background: var(--primary-red);">حفظ الأمنية 🪄</button>
+                </div>
+
+                <div class="scratch-box">
+                    <span style="color: #b30000;">انت أحلى بستوت في الدنيا 🫵</span>
+                    <canvas id="scratch-canvas" width="300" height="100"></canvas>
+                </div>
+
+                <button style="margin-top:20px; background:#fff; color:#b30000; padding:10px 20px; border-radius:20px; border:none; font-weight:bold;" onclick="showEmergency()">لو زعلتي مني في يوم دوسي هنا 😇</button>
+                <div class="final-wish">Happy birthday bastotyyyy♥️</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="emergency-box" class="hidden emergency-msg" onclick="this.classList.add('hidden')">
+        <p>مهما حصل بينا هتفضلي أغلى وأحسن حد أنا عرفتوو، ولو زعلتي مني في يوم تعالي عاتبيني ومتشليش جواكي، وأنا وقتها هصالحك وهسمعك دايماً ❤️</p>
+        <span class="close-hint">دوسي علي الشاشه عشان تتقفل يبستوتي😊</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        // وظيفة إنتاج القلوب عند اللمس
+        function spawnHeart(e) {
+            const heart = document.createElement("div");
+            heart.className = "touch-heart";
+            heart.innerHTML = "❤️";
+            const x = e.clientX || e.touches[0].clientX;
+            const y = e.clientY || e.touches[0].clientY;
+            heart.style.left = (x - 12) + "px";
+            heart.style.top = (y - 12) + "px";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        const targetDate = new Date("March 2, 2025 00:00:00").getTime();
+        const lockTimer = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById("countdown-timer").innerHTML = days + " يوم و " + hours + " ساعة و " + minutes + " دقيقة و " + seconds + " ثانية ";
+            if (distance < 0) {
+                clearInterval(lockTimer);
+                document.getElementById('lock-screen').style.display = "none";
+                document.getElementById('envelope-wrapper').classList.remove('hidden');
+            }
+        }, 1000);
+
+        function openEnvelope() {
+            document.getElementById('env').classList.add('open');
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.5 } });
+            setTimeout(() => {
+                document.getElementById('envelope-wrapper').classList.add('hidden');
+                document.getElementById('login-screen').classList.remove('hidden');
+            }, 1200);
+        }
+
+        function checkPass() {
+            if (document.getElementById('password').value === "3/2") {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('quiz-screen').classList.remove('hidden');
+                loadQuestion();
+            } else { alert("الباسورد غلط! 🤫"); }
+        }
+
+        const questions = [
+            { q: "إيه أكتر حاجة بقولهالك؟ 🤔", options: ["خدخودي", "ملوكتي", "عمري", "كلهم صح"], correct: 3 },
+            { q: "لما بزعل بعمل إيه؟ 🧐", options: ["بنام", "بختفي", "أجي أكلمك"], correct: 2 },
+            { q: "إيه أكتر حاجة بحبها؟ 💪", options: ["الجيم", "الألعاب", "الأكل"], correct: 0 }
+        ];
+        let currentIdx = 0;
+
+        function loadQuestion() {
+            const q = questions[currentIdx];
+            document.getElementById('quiz-question').innerText = q.q;
+            const box = document.getElementById('quiz-options');
+            box.innerHTML = '';
+            q.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-btn'; btn.innerText = opt;
+                btn.onclick = () => {
+                    if(i === q.correct) {
+                        currentIdx++;
+                        if(currentIdx < questions.length) loadQuestion();
+                        else {
+                            confetti();
+                            document.getElementById('quiz-screen').classList.add('hidden');
+                            document.getElementById('cake-screen').classList.remove('hidden');
+                        }
+                    } else { alert("غلط! جربي تاني 😜"); }
+                };
+                box.appendChild(btn);
+            });
+        }
+
+        function blowCandle() {
+            confetti({ particleCount: 200, spread: 100 });
+            setTimeout(() => {
+                document.getElementById('cake-screen').classList.add('hidden');
+                document.getElementById('main-content').classList.remove('hidden');
+                initScratch();
+                startLiveCounter();
+            }, 1000);
+        }
+
+        function saveWish() {
+            if(document.getElementById('wishInput').value) {
+                alert("أمنيتك اتحفظت يبستوتييي..هنحققها سوا متقلقيش❤️");
+                confetti({ particleCount: 50 });
+            }
+        }
+
+        function initScratch() {
+            const canvas = document.getElementById('scratch-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#C0C0C0'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#b30000'; ctx.font = 'bold 18px Cairo'; ctx.fillText('خربشي هنا 😡', 100, 55);
+            const scratch = (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath(); ctx.arc(x, y, 25, 0, Math.PI * 2); ctx.fill();
+            };
+            canvas.addEventListener('mousemove', (e) => e.buttons === 1 && scratch(e));
+            canvas.addEventListener('touchmove', (e) => { e.preventDefault(); scratch(e); });
+        }
+
+        function startLiveCounter() {
+            const start = new Date("September 10, 2025 00:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = now - start;
+                const d = Math.floor(diff / 864e5);
+                const h = Math.floor((diff % 864e5) / 36e5);
+                const m = Math.floor((diff % 36e5) / 6e4);
+                const s = Math.floor((diff % 6e4) / 1e3);
+                document.getElementById("live-counter").innerHTML = d + " يوم و " + h + " ساعة و " + m + " دقيقة و " + s + " ثانية ";
+            }, 1000);
+        }
+
+        function showEmergency() { document.getElementById('emergency-box').classList.remove('hidden'); }
+    </script>
+</body>
+</html>
